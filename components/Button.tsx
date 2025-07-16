@@ -1,5 +1,6 @@
+import { ThemeContext } from "@/context/ThemedContext";
 import { Colors } from "@/utils/Colors";
-import React from "react";
+import React, { useContext } from "react";
 import { Pressable, StyleSheet, Text } from "react-native";
 
 const Button = ({
@@ -11,6 +12,8 @@ const Button = ({
   type: "top" | "right" | "number";
   onPress: () => void;
 }) => {
+  const { currentTheme } = useContext(ThemeContext);
+
   return (
     <Pressable
       onPress={onPress}
@@ -18,7 +21,13 @@ const Button = ({
         styles.button,
         {
           backgroundColor:
-            type === "top"
+            currentTheme === "dark"
+              ? type === "top"
+                ? Colors.btnLight
+                : type === "right"
+                ? Colors.btnRight
+                : Colors.btnDark
+              : type === "top"
               ? Colors.btnDark
               : type === "right"
               ? Colors.btnRight
@@ -29,7 +38,14 @@ const Button = ({
       <Text
         style={{
           fontSize: 34,
-          color: type === "number" ? "black" : Colors.light,
+          color:
+            currentTheme === "dark"
+              ? type !== "top"
+                ? Colors.light
+                : Colors.dark
+              : type === "number"
+              ? Colors.dark
+              : Colors.light,
         }}
       >
         {title}

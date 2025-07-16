@@ -1,9 +1,11 @@
+import { ThemeContext } from "@/context/ThemedContext";
 import { Colors } from "@/utils/Colors";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Button from "./Button";
 
 const Calculator = () => {
+  const { currentTheme } = useContext(ThemeContext);
   const [firstValue, setFirstValue] = useState("");
   const [displayValue, setDisplayValue] = useState("0");
   const [operator, setOperator] = useState("");
@@ -89,11 +91,43 @@ const Calculator = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.display}>
-        <Text style={{ fontSize: 30, fontWeight: "300" }}>{previous}</Text>
-        <Text style={{ fontSize: 70, fontWeight: "300" }}>{displayValue}</Text>
+      <View
+        style={[
+          styles.display,
+          {
+            backgroundColor:
+              currentTheme === "dark" ? Colors.dark : Colors.gray,
+          },
+        ]}
+      >
+        <Text
+          style={{
+            fontSize: 30,
+            fontWeight: "300",
+            color: currentTheme === "dark" ? Colors.light : Colors.dark,
+          }}
+        >
+          {previous}
+        </Text>
+        <Text
+          style={{
+            fontSize: 70,
+            fontWeight: "300",
+            color: currentTheme === "dark" ? Colors.light : Colors.dark,
+          }}
+        >
+          {displayValue}
+        </Text>
       </View>
-      <View style={styles.keypad}>
+      <View
+        style={[
+          styles.keypad,
+          {
+            backgroundColor:
+              currentTheme === "dark" ? Colors.dark : Colors.light,
+          },
+        ]}
+      >
         <Button
           title="C"
           type="top"
@@ -207,7 +241,6 @@ const styles = StyleSheet.create({
   },
   display: {
     flex: 1,
-    backgroundColor: Colors.gray,
     paddingVertical: 20,
     paddingHorizontal: 40,
     alignItems: "flex-end",
@@ -217,7 +250,6 @@ const styles = StyleSheet.create({
     flex: 2,
     flexDirection: "row",
     flexWrap: "wrap",
-    backgroundColor: Colors.light,
     justifyContent: "center",
     gap: 8,
     padding: 7,
